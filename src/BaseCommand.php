@@ -229,6 +229,16 @@ abstract class BaseCommand implements BaseCommandInterface
 	}
 
 	/**
+	 * Write title messages.
+	 *
+	 * @param string|array $messages
+	 */
+	public function title($messages)
+	{
+		Console::title($messages);
+	}
+
+	/**
 	 * Write block messages.
 	 *
 	 * @param string|array $messages

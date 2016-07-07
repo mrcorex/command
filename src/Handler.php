@@ -10,16 +10,16 @@ class Handler
 	private $component;
 	private $command;
 	private $isHelp;
-	private $disableInternal;
+	private $hideInternal;
 
 	/**
 	 * Arguments from CLI.
 	 *
 	 * Handler constructor.
 	 * @param array $arguments
-	 * @param boolean $useInternalCommands
+	 * @param boolean $showInternalCommands
 	 */
-	public function __construct($arguments, $useInternalCommands)
+	public function __construct($arguments, $showInternalCommands)
 	{
 		if (isset($arguments[0])) {
 			unset($arguments[0]);
@@ -40,7 +40,7 @@ class Handler
 		$this->arguments = array_values($arguments);
 
 		// Scan for internal commands.
-		$this->disableInternal = !$useInternalCommands;
+		$this->hideInternal = !$showInternalCommands;
 		$this->registerOnPath(__DIR__);
 	}
 
@@ -52,11 +52,7 @@ class Handler
 	 */
 	public function register($class)
 	{
-		$internalCommandPrefix = 'CoRex\Command\\';
-		if ($this->disableInternal && substr($class, 0, strlen($internalCommandPrefix)) == $internalCommandPrefix) {
-			return;
-		}
-		SignatureHandler::register($class);
+		SignatureHandler::register($class, $this->hideInternal);
 	}
 
 	/**
@@ -104,7 +100,7 @@ class Handler
 	{
 		if ($this->component == '') {
 			Console::header(self::TITLE);
-			Console::comment('Usage:');
+			Console::title('Usage:');
 			Console::writeln('  {component} {command} [options] [arguments]');
 			Console::writeln('');
 			Console::writeln('  To show help for command: help {component} {command}');
@@ -145,13 +141,12 @@ class Handler
 	 */
 	public function showAll($component = '')
 	{
-		Console::header(self::TITLE);
 		if ($component != '') {
 			if (!SignatureHandler::componentExist($component)) {
 				Console::throwError('Component not found: ' . $component);
 			}
 		} else {
-			Console::comment('Available commands:');
+			Console::title('Available commands:');
 		}
 		$components = SignatureHandler::getComponents();
 		if (count($components) > 0) {
@@ -159,9 +154,18 @@ class Handler
 				if ($component != '' && $componentName != $component) {
 					continue;
 				}
-				Console::info('  ' . $componentName);
+				if ($this->hideInternal && in_array($componentName, ['make'])) {
+					continue;
+				}
+				if (!SignatureHandler::isComponentVisible($componentName)) {
+					continue;
+				}
+				Console::title('  ' . $componentName);
 				$commands = SignatureHandler::getCommands($componentName);
 				foreach ($commands as $command => $properties) {
+					if (!$properties['visible']) {
+						continue;
+					}
 					Console::write('    ' . $componentName . ':' . $command, self::LENGTH_INDENT);
 					Console::writeln($properties['description']);
 				}
@@ -198,16 +202,16 @@ class Handler
 		Console::writeln('');
 
 		// Show usage.
-		Console::comment('Usage:');
-		Console::writeln('  ' . $component . ' ' . $command . ' [options] [arguments]');
+		Console::title('Usage:');
+		Console::writeln('  ' . $component . ':' . $command . ' [options] [arguments]');
 		Console::writeln('');
 
 		// Show arguments.
-		Console::comment('Arguments:');
+		Console::title('Arguments:');
 		if (isset($signature['arguments']) && count($signature['arguments']) > 0) {
 			foreach ($signature['arguments'] as $argument => $properties) {
 				$description = $properties['description'];
-				Console::write('    ' . $argument, self::LENGTH_INDENT);
+				Console::info('    ' . $argument, self::LENGTH_INDENT);
 				if ($properties['optional']) {
 					Console::warning('(optional) ', false);
 				}
@@ -217,14 +221,14 @@ class Handler
 		Console::writeln('');
 
 		// Show options.
-		Console::comment('Options:');
+		Console::title('Options:');
 		if (isset($signature['options']) && count($signature['options']) > 0) {
 			foreach ($signature['options'] as $option => $properties) {
 				$description = $properties['description'];
 				if ($properties['hasValue']) {
 					$option .= '=';
 				}
-				Console::write('    --' . $option, self::LENGTH_INDENT);
+				Console::info('    --' . $option, false, self::LENGTH_INDENT);
 				if ($properties['hasValue']) {
 					Console::warning('(value) ', false);
 				}

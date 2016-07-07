@@ -73,12 +73,11 @@ class Console
 	 * Write header (title + separator).
 	 *
 	 * @param string $title
-	 * @param string $style Default ''.
 	 */
-	public static function header($title, $style = '')
+	public static function header($title)
 	{
 		$title = str_pad($title, self::$lineLength, ' ', STR_PAD_RIGHT);
-		self::writeln($title, 0, $style);
+		self::writeln($title, 0, 'title');
 		self::separator('=');
 	}
 
@@ -142,6 +141,19 @@ class Console
 	{
 		$separator = $linebreak ? "\n" : '';
 		self::write($messages, $length, 'warning', $separator);
+	}
+
+	/**
+	 * Write title messages.
+	 *
+	 * @param string|array $messages
+	 * @param boolean $linebreak Default false.
+	 * @param integer $length Default 0 which means not fixed length.
+	 */
+	public static function title($messages, $linebreak = true, $length = 0)
+	{
+		$separator = $linebreak ? "\n" : '';
+		self::write($messages, $length, 'title', $separator);
 	}
 
 	/**

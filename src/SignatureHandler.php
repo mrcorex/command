@@ -10,9 +10,10 @@ class SignatureHandler
 	 * Register command class.
 	 *
 	 * @param string $class
+	 * @param boolean $hideInternal
 	 * @throws \Exception
 	 */
-	public static function register($class)
+	public static function register($class, $hideInternal)
 	{
 		self::initialize();
 
@@ -35,9 +36,19 @@ class SignatureHandler
 		if (!isset($properties['description'])) {
 			Console::throwError('$description not found in ' . $class);
 		}
+		if (!isset($properties['visible'])) {
+			Console::throwError('$visible not found in ' . $class);
+		}
 		$component = $properties['component'];
 		$signature = $properties['signature'];
 		$description = $properties['description'];
+		$visible = $properties['visible'];
+
+		// Hide internal command if needed.
+		$internalCommandPrefix = 'CoRex\Command\\';
+		if ($hideInternal && substr($class, 0, strlen($internalCommandPrefix)) == $internalCommandPrefix) {
+			$visible = false;
+		}
 
 		// Extract command.
 		$command = $signature;
@@ -97,6 +108,7 @@ class SignatureHandler
 		self::$commands[$component][$command] = [
 			'class' => $class,
 			'description' => $description,
+			'visible' => $visible,
 			'arguments' => $arguments,
 			'options' => $options
 		];
@@ -117,6 +129,26 @@ class SignatureHandler
 			$data = self::$commands[$component][$command];
 		}
 		return $data;
+	}
+
+	/**
+	 * Is component visible.
+	 *
+	 * @param string $component
+	 * @return boolean
+	 */
+	public static function isComponentVisible($component)
+	{
+		$result = false;
+		$commands = self::getCommands($component);
+		if (count($commands) > 0) {
+			foreach ($commands as $command => $properties) {
+				if ($properties['visible']) {
+					$result = true;
+				}
+			}
+		}
+		return $result;
 	}
 
 	/**

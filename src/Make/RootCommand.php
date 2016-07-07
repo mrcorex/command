@@ -10,8 +10,9 @@ class RootCommand extends BaseCommand
 {
 	protected $component = 'make';
 	protected $signature = 'root
-		{--delete: Delete existing crcmd}';
+		{--delete=: Delete existing crcmd}';
 	protected $description = 'Make root-command (crcmd) in current directory';
+	protected $visible = true;
 
 	public function run()
 	{
