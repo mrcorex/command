@@ -1,0 +1,33 @@
+#!/usr/bin/env php
+<?php
+
+if (!ini_get('date.timezone')) {
+	ini_set('date.timezone', 'UTC');
+}
+
+$paths = [
+	dirname(dirname(__DIR__)),
+	dirname(__DIR__) . '/vendor',
+	__DIR__ . '/vendor'
+];
+
+$loaded = false;
+foreach ($paths as $path) {
+	if (file_exists($path . '/autoload.php')) {
+		require_once($path . '/autoload.php');
+		$loaded = true;
+		break;
+	}
+}
+
+if (!$loaded) {
+	fwrite(STDERR, 'You need to use composer to install this package');
+	die(1);
+}
+
+try {
+	$handler = new \CoRex\Command\Handler($argv, true);
+	$handler->execute();
+} catch (Exception $e) {
+	print($e->getMessage() . "\n");
+}

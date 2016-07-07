@@ -1,0 +1,28 @@
+{
+    "name": "mrcorex/command",
+    "description": "Command Framework",
+    "keywords": [
+        "console",
+        "command"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "CoRex",
+            "email": "dev@corex.dk",
+            "homepage": "http://corex.dk",
+            "role": "Project Founder"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9"
+    },
+    "bin": [
+        "crcmd"
+    ],
+    "autoload": {
+        "psr-4": {
+            "CoRex\\Command\\": "src/"
+        }
+    }
+}
