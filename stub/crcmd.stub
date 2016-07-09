@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-require_once('{autoload}');
+require_once({autoload});
 
 try {
     $handler = new \CoRex\Command\Handler($argv, true);
