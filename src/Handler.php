@@ -213,7 +213,7 @@ class Handler
         if (isset($signature['arguments']) && count($signature['arguments']) > 0) {
             foreach ($signature['arguments'] as $argument => $properties) {
                 $description = $properties['description'];
-                Console::info('    ' . $argument, self::LENGTH_INDENT);
+                Console::info('    ' . $argument, false, self::LENGTH_INDENT);
                 if ($properties['optional']) {
                     Console::warning('(optional) ', false);
                 }
