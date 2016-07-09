@@ -161,7 +161,7 @@ class SignatureHandler
      * @return mixed
      * @throws \Exception
      */
-    public static function call($component, $command, $arguments = [], $silent = false)
+    public static function call($component, $command, array $arguments = [], $silent = false)
     {
         self::initialize();
         $signature = self::getSignature($component, $command);

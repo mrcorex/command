@@ -14,6 +14,11 @@ class RootCommand extends BaseCommand
     protected $description = 'Make root-command (crcmd) in current directory';
     protected $visible = true;
 
+    /**
+     * Run command.
+     *
+     * @throws \Exception
+     */
     public function run()
     {
         $this->header($this->description);

@@ -10,7 +10,7 @@ class Path
      * @param array $segments Default [].
      * @return string
      */
-    public static function getRoot($segments = [])
+    public static function getRoot(array $segments = [])
     {
         $path = dirname(dirname(dirname(dirname(__DIR__))));
         $path = str_replace('\\', '/', $path);

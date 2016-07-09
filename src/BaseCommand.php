@@ -125,7 +125,7 @@ abstract class BaseCommand implements BaseCommandInterface
      * @return mixed
      * @throws \Exception
      */
-    public function call($command, $arguments = [])
+    public function call($command, array $arguments = [])
     {
         return SignatureHandler::call($command, $arguments);
     }
@@ -138,7 +138,7 @@ abstract class BaseCommand implements BaseCommandInterface
      * @return mixed
      * @throws \Exception
      */
-    public function callSilent($command, $arguments = [])
+    public function callSilent($command, array $arguments = [])
     {
         return SignatureHandler::call($command, $arguments, true);
     }
@@ -148,7 +148,7 @@ abstract class BaseCommand implements BaseCommandInterface
      *
      * @param string|array $messages
      * @param string $style Default '' which means 'normal'.
-     * @param bool $linebreak Default false.
+     * @param boolean $linebreak Default false.
      * @throws \Exception
      */
     public function write($messages, $style = '', $linebreak = false)

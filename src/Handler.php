@@ -19,7 +19,7 @@ class Handler
      * @param array $arguments
      * @param boolean $showInternalCommands
      */
-    public function __construct($arguments, $showInternalCommands)
+    public function __construct(array $arguments, $showInternalCommands)
     {
         if (isset($arguments[0])) {
             unset($arguments[0]);
@@ -117,7 +117,9 @@ class Handler
         if ($signature === null) {
             if ($this->command != '') {
                 Console::header(self::TITLE);
-                Console::throwError('Command ' . $this->command . ' in component ' . $this->component . ' does not exist.');
+                Console::throwError(
+                    'Command ' . $this->command . ' in component ' . $this->component . ' does not exist.'
+                );
             }
             $this->showAll($this->component);
             return false;

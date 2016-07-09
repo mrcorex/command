@@ -131,7 +131,7 @@ class Table
      * @param array $row
      * @return string
      */
-    private function renderRow($row)
+    private function renderRow(array $row)
     {
         $output = [];
         $output[] = $this->charVertical;
@@ -168,7 +168,7 @@ class Table
      * Get width of column.
      *
      * @param string $column
-     * @return int
+     * @return integer
      */
     private function getWidth($column)
     {
