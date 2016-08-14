@@ -23,6 +23,11 @@ class RootCommand extends BaseCommand
     {
         $this->header($this->description);
 
+        // Make sure this command only works if installed through composer.
+        if (!$this->isComposerInstalled()) {
+            Console::throwError('This command is not allowed unless installed through composer.');
+        }
+
         $cmdFilename = 'crcmd';
         $currentDirectory = getcwd();
 

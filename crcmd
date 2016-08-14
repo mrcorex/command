@@ -20,13 +20,17 @@ foreach ($paths as $path) {
     }
 }
 
+// Setup auto-loader.
+$isComposerInstalled = true;
 if (!$loaded) {
-    fwrite(STDERR, "You need to use composer to install this package\n");
-    die(1);
+    require_once(__DIR__ . '/src/Loader.php');
+    \CoRex\Command\Loader::initialize();
+    $loaded = true;
+    $isComposerInstalled = false;
 }
 
 try {
-    $handler = new \CoRex\Command\Handler($argv, true);
+    $handler = new \CoRex\Command\Handler($argv, true, $isComposerInstalled);
     $handler->execute();
 } catch (Exception $e) {
     print($e->getMessage() . "\n");

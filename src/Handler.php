@@ -11,6 +11,7 @@ class Handler
     private $command;
     private $isHelp;
     private $hideInternal;
+    private $isComposerInstalled;
 
     /**
      * Arguments from CLI.
@@ -18,8 +19,9 @@ class Handler
      * Handler constructor.
      * @param array $arguments
      * @param boolean $showInternalCommands
+     * @param boolean $isComposerInstalled
      */
-    public function __construct(array $arguments, $showInternalCommands)
+    public function __construct(array $arguments, $showInternalCommands, $isComposerInstalled)
     {
         if (isset($arguments[0])) {
             unset($arguments[0]);
@@ -42,6 +44,7 @@ class Handler
         // Scan for internal commands.
         $this->hideInternal = !$showInternalCommands;
         $this->registerOnPath(__DIR__);
+        $this->isComposerInstalled = $isComposerInstalled;
     }
 
     /**
@@ -130,7 +133,7 @@ class Handler
         if (!in_array('setProperties', get_class_methods($class))) {
             Console::throwError($class . ' does not extend CoRex\Command\BaseCommand.');
         }
-        SignatureHandler::call($this->component, $this->command, $this->arguments);
+        SignatureHandler::call($this->component, $this->command, $this->arguments, false, $this->isComposerInstalled);
 
         return true;
     }

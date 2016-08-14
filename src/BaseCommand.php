@@ -7,15 +7,17 @@ abstract class BaseCommand implements BaseCommandInterface
     private $signature;
     private $arguments;
     private $options;
+    private $isComposerInstalled;
 
     /**
      * Set arguments.
      *
      * @param array $signature
      * @param array $arguments
+     * @param boolean $isComposerInstalled
      * @throws \Exception
      */
-    public function setProperties(array $signature, array $arguments)
+    public function setProperties(array $signature, array $arguments, $isComposerInstalled)
     {
         $this->signature = $signature;
 
@@ -65,6 +67,8 @@ abstract class BaseCommand implements BaseCommandInterface
             }
             $this->options[$option] = $value;
         }
+
+        $this->isComposerInstalled = $isComposerInstalled;
     }
 
     /**
@@ -75,6 +79,14 @@ abstract class BaseCommand implements BaseCommandInterface
     public function setSilent($silent = true)
     {
         Console::setSilent($silent);
+    }
+
+    /**
+     * Return true false if installed through composer.
+     */
+    public function isComposerInstalled()
+    {
+        return $this->isComposerInstalled;
     }
 
     /**
@@ -120,14 +132,16 @@ abstract class BaseCommand implements BaseCommandInterface
     /**
      * Call command.
      *
+     * @param string $component
      * @param string $command
      * @param array $arguments
+     * @param boolean $silent
      * @return mixed
      * @throws \Exception
      */
-    public function call($command, array $arguments = [])
+    public function call($component, $command, array $arguments = [], $silent = false)
     {
-        return SignatureHandler::call($command, $arguments);
+        return SignatureHandler::call($component, $command, $arguments, $silent);
     }
 
     /**
