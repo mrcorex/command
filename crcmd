@@ -21,7 +21,7 @@ foreach ($paths as $path) {
 }
 
 if (!$loaded) {
-    fwrite(STDERR, 'You need to use composer to install this package');
+    fwrite(STDERR, "You need to use composer to install this package\n");
     die(1);
 }
 
