@@ -35,7 +35,11 @@ class Handler
             unset($arguments[0]);
             $arguments = array_values($arguments);
         }
-        $componentCommand = isset($arguments[0]) ? $arguments[0] : '';
+        $componentCommand = '';
+        if (isset($arguments[0])) {
+            $componentCommand = $arguments[0];
+            unset($arguments[0]);
+        }
         $argumentParts = $this->splitArgument($componentCommand);
         $this->component = $argumentParts['component'];
         $this->command = $argumentParts['command'];
