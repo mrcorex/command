@@ -159,9 +159,6 @@ class Handler
                 if ($component != '' && $componentName != $component) {
                     continue;
                 }
-                if ($this->hideInternal && in_array($componentName, ['make'])) {
-                    continue;
-                }
                 if (!SignatureHandler::isComponentVisible($componentName)) {
                     continue;
                 }
