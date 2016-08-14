@@ -11,7 +11,9 @@ Run "php crcmd help make:root" to create a "crcmd" in current directory. This fi
 
 ## Dokumentation for command
 
-Look at Make/RootCommand (existing command). Following properties must be set in command.
+Look at Make/RootCommand (existing command) to see example.
+
+Following properties must be set in command.
 
 ### Property $component
 Every command belongs to a component. This is the name of component. Must be specified in lowercase.
@@ -20,10 +22,10 @@ Every command belongs to a component. This is the name of component. Must be spe
 This signature describes the arguments and options of the command. It follows the same setup as Laravel 5.
 
 Format is "command {argument/--option : description} {argument/--option : description}"
-- Part 1 is the name of the command. Must be surrounded with {} and must be specified in lowercase.
-- Part 2 is the format of arguments and options. Can be specified multiple times.
+- Part 1 "command" is the name of the command. Must be specified in lowercase.
+- Part 2 "{argument/--option : description}" is the format of arguments and options. Can be specified multiple times. Each argument/options must be surrounded by {}.
   - Every argument is required unless you add a "?" at the end of argument-name. If "?" is added, argument will return null.
-  - Every option must be prefix'ed with "--". If specified, it will be true, otherwise false. If you need to parse a value instead, add a "=" at the end.
+  - Every option must be prefix'ed with "--". If specified on command-line, it will be true, otherwise false. If you need to parse a value instead, add a "=" at the end.
 
 ### Property $description
 This is the description you will see on the list of available commands.
