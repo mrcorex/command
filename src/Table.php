@@ -22,7 +22,6 @@ class Table
         $this->columns = [];
         $this->widths = [];
         $this->rows = [];
-
     }
 
     /**

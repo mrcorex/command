@@ -7,17 +7,17 @@ abstract class BaseCommand implements BaseCommandInterface
     private $signature;
     private $arguments;
     private $options;
-    private $isComposerInstalled;
+    private $throughComposer;
 
     /**
      * Set arguments.
      *
      * @param array $signature
      * @param array $arguments
-     * @param boolean $isComposerInstalled
+     * @param boolean $throughComposer
      * @throws \Exception
      */
-    public function setProperties(array $signature, array $arguments, $isComposerInstalled)
+    public function setProperties(array $signature, array $arguments, $throughComposer)
     {
         $this->signature = $signature;
 
@@ -68,7 +68,7 @@ abstract class BaseCommand implements BaseCommandInterface
             $this->options[$option] = $value;
         }
 
-        $this->isComposerInstalled = $isComposerInstalled;
+        $this->throughComposer = $throughComposer;
     }
 
     /**
@@ -84,9 +84,9 @@ abstract class BaseCommand implements BaseCommandInterface
     /**
      * Return true false if installed through composer.
      */
-    public function isComposerInstalled()
+    public function throughComposer()
     {
-        return $this->isComposerInstalled;
+        return $this->throughComposer;
     }
 
     /**

@@ -20,10 +20,10 @@ foreach ($paths as $path) {
 }
 
 // Setup auto-loader.
-$isComposerInstalled = true;
+$throughComposer = true;
 if (!$loaded) {
     require_once(__DIR__ . '/Loader.php');
     \CoRex\Command\Loader::initialize();
     $loaded = true;
-    $isComposerInstalled = false;
+    $throughComposer = false;
 }

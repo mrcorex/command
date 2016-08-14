@@ -158,11 +158,11 @@ class SignatureHandler
      * @param string $command
      * @param array $arguments
      * @param boolean $silent
-     * @param boolean $isComposerInstalled
+     * @param boolean $throughComposer
      * @return mixed
      * @throws \Exception
      */
-    public static function call($component, $command, array $arguments = [], $silent = false, $isComposerInstalled = false)
+    public static function call($component, $command, array $arguments = [], $silent = false, $throughComposer = false)
     {
         self::initialize();
         $signature = self::getSignature($component, $command);
@@ -171,7 +171,7 @@ class SignatureHandler
             Console::throwError('Class ' . $class . ' does not exist.');
         }
         $object = new $class();
-        $object->setProperties($signature, $arguments, $isComposerInstalled);
+        $object->setProperties($signature, $arguments, $throughComposer);
         $object->setSilent($silent);
         return $object->run();
     }
