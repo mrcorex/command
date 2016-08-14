@@ -205,26 +205,19 @@ class Handler
 
         // Show usage.
         Console::title('Usage:');
-        Console::writeln('  ' . $component . ':' . $command . ' [options] [arguments]');
-        Console::writeln('');
-
-        // Show arguments.
-        Console::title('Arguments:');
-        if (isset($signature['arguments']) && count($signature['arguments']) > 0) {
-            foreach ($signature['arguments'] as $argument => $properties) {
-                $description = $properties['description'];
-                Console::info('    ' . $argument, false, self::LENGTH_INDENT);
-                if ($properties['optional']) {
-                    Console::warning('(optional) ', false);
-                }
-                Console::writeln($description);
-            }
+        Console::write('  ' . $component . ':' . $command);
+        if (isset($signature['options']) && count($signature['options']) > 0) {
+            Console::write(' [options]');
         }
+        if (isset($signature['arguments']) && count($signature['arguments']) > 0) {
+            Console::write(' [arguments]');
+        }
+        Console::writeln('');
         Console::writeln('');
 
         // Show options.
-        Console::title('Options:');
         if (isset($signature['options']) && count($signature['options']) > 0) {
+            Console::title('Options:');
             foreach ($signature['options'] as $option => $properties) {
                 $description = $properties['description'];
                 if ($properties['hasValue']) {
@@ -236,8 +229,22 @@ class Handler
                 }
                 Console::writeln($description);
             }
+            Console::writeln('');
         }
-        Console::writeln('');
+
+        // Show arguments.
+        if (isset($signature['arguments']) && count($signature['arguments']) > 0) {
+            Console::title('Arguments:');
+            foreach ($signature['arguments'] as $argument => $properties) {
+                $description = $properties['description'];
+                Console::info('    ' . $argument, false, self::LENGTH_INDENT);
+                if ($properties['optional']) {
+                    Console::warning('(optional) ', false);
+                }
+                Console::writeln($description);
+            }
+            Console::writeln('');
+        }
     }
 
     /**
