@@ -173,7 +173,9 @@ class SignatureHandler
         $object = new $class();
         $object->setProperties($signature, $arguments, $throughComposer);
         $object->setSilent($silent);
-        return $object->run();
+        $result = $object->run();
+        $object->setSilent(false);
+        return $result;
     }
 
     /**
