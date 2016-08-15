@@ -5,13 +5,13 @@ namespace CoRex\Command;
 class Handler
 {
     const TITLE = 'CoRex Command.';
-    const LENGTH_INDENT = 24;
     private $arguments;
     private $component;
     private $command;
     private $isHelp;
     private $hideInternal;
     private $throughComposer;
+    private $indentLength;
 
     /**
      * Arguments from CLI.
@@ -20,9 +20,11 @@ class Handler
      * @param array $arguments
      * @param boolean $showInternalCommands
      * @param boolean $throughComposer
+     * @param integer $indentLength Default 30.
      */
-    public function __construct(array $arguments, $showInternalCommands, $throughComposer)
+    public function __construct(array $arguments, $showInternalCommands, $throughComposer, $indentLength = 30)
     {
+        $this->indentLength = $indentLength;
         if (isset($arguments[0])) {
             unset($arguments[0]);
             $arguments = array_values($arguments);
@@ -172,7 +174,7 @@ class Handler
                     if (!$properties['visible']) {
                         continue;
                     }
-                    Console::write('    ' . $componentName . ':' . $command, self::LENGTH_INDENT);
+                    Console::write('    ' . $componentName . ':' . $command, $this->indentLength);
                     Console::writeln($properties['description']);
                 }
             }
@@ -227,7 +229,7 @@ class Handler
                 if ($properties['hasValue']) {
                     $option .= '=';
                 }
-                Console::info('    --' . $option, false, self::LENGTH_INDENT);
+                Console::info('    --' . $option, false, $this->indentLength);
                 if ($properties['hasValue']) {
                     Console::warning('(value) ', false);
                 }
@@ -241,7 +243,7 @@ class Handler
             Console::title('Arguments:');
             foreach ($signature['arguments'] as $argument => $properties) {
                 $description = $properties['description'];
-                Console::info('    ' . $argument, false, self::LENGTH_INDENT);
+                Console::info('    ' . $argument, false, $this->indentLength);
                 if ($properties['optional']) {
                     Console::warning('(optional) ', false);
                 }
